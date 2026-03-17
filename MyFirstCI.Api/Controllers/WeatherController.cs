@@ -15,7 +15,7 @@ public class WeatherController : ControllerBase
                     Random.Shared.Next(-20, 55)
                 ))
             .ToArray();
-        return forecast;
+        return forecast
     }
 }
 
