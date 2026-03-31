@@ -27,6 +27,17 @@ jobs:
 
   build-and-push:
     name: Build and Push Docker Image
+    - name: Test container healthcheck
+    run: |
+    # Запускаем контейнер с собранным образом
+    docker run -d -p 8080:8080 --name test-api ${{ steps.meta.outputs.tags }}
+    # Ждём 10 секунд, чтобы приложение и healthcheck запустились
+    sleep 10
+    # Показываем статус контейнера (должен быть healthy)
+    docker ps --filter "name=test-api" --format "table {{.Status}}"
+    # Останавливаем и удаляем контейнер
+    docker stop test-api
+    docker rm test-api
     needs: test
     runs-on: ubuntu-latest
     permissions:
